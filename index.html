@@ -677,18 +677,6 @@
                       <p className="text-zinc-500 dark:text-zinc-400"><strong className="text-zinc-800 dark:text-zinc-200">Tahun:</strong> {selectedWork.year}</p>
                     </div>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const cat = selectedWork.category;
-                      setSelectedWork(null);
-                      openOrderModalWithService(cat);
-                    }}
-                    className="mt-6 block text-center w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-sm transition-colors"
-                  >
-                    Pesan Gaya Desain Seperti Ini
-                  </button>
                 </div>
               </div>
             </div>
