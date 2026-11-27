@@ -222,6 +222,7 @@
       const [selectedWork, setSelectedWork] = useState(null);
       const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
       const [isDark, setIsDark] = useState(false);
+      const [showGoToTop, setShowGoToTop] = useState(false);
 
       // State Form Order WhatsApp
       const [orderName, setOrderName] = useState("");
@@ -236,6 +237,18 @@
           rootEl.classList.remove("dark");
         }
       }, [isDark]);
+
+      useEffect(() => {
+        const handleScroll = () => {
+          setShowGoToTop(window.scrollY > 300);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
+
+      const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
 
       const displayedItems = showAll
         ? INITIAL_PORTFOLIO
@@ -284,20 +297,13 @@
                   className="w-8 h-8 rounded-lg object-contain" 
                 />
                 <span className="font-extrabold text-xl tracking-tight text-zinc-900 dark:text-white">
-                  SETINGKAT<span className="text-amber-500 dark:text-amber-400">.</span>
+                  Setingkat
                 </span>
               </a>
 
               <div className="flex items-center gap-4 sm:gap-6">
                 <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                  <a href="#galeri" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Galeri Karya</a>
-                  <button
-                    type="button"
-                    onClick={() => openOrderModalWithService()}
-                    className="hover:text-zinc-950 dark:hover:text-white transition-colors"
-                  >
-                    Pesan Desain
-                  </button>
+                  <a href="#galeri" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Wujudkan Ide Kamu</a>
                 </nav>
 
                 <div className="flex items-center gap-2.5 sm:gap-3">
@@ -344,15 +350,15 @@
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1]">
-                  Ubah Foto & Ide Menjadi{" "}
+                  Bikin Foto & Idemu Jadi{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 dark:from-amber-400 dark:via-pink-500 dark:to-cyan-400">
-                    WPAP & Poster
+                    Karya WPAP & Poster
                   </span>{" "}
-                  Berdaya Visual Tinggi.
+                  Keren.
                 </h1>
 
                 <p className="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                  Showcase resmi hasil karya desain grafis <strong className="text-zinc-900 dark:text-zinc-200">Setingkat</strong>. Spesialis ilustrasi vektor poligonal WPAP (Wedha&apos;s Pop Art Portrait), poster acara, promosi bisnis, hingga materi cetak resolusi tinggi.
+                  Punya foto favorit buat kado atau ide acara yang mau dipromosiin? Di <strong className="text-zinc-900 dark:text-zinc-200">Setingkat</strong>, semuanya bisa kita sulap jadi ilustrasi WPAP warna-warni sampai poster kece yang siap cetak dan pamerin.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -360,15 +366,8 @@
                     href="#galeri"
                     className="px-6 py-3.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
                   >
-                    Lihat Koleksi Karya
+                    Eksplor Hasil Desain
                   </a>
-                  <button
-                    type="button"
-                    onClick={() => openOrderModalWithService()}
-                    className="px-6 py-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold text-sm hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
-                  >
-                    Konsultasi Konsep
-                  </button>
                 </div>
               </div>
 
@@ -395,10 +394,15 @@
             </div>
           </section>
 
-          {/* Galeri Portofolio */}
+          {/* Wujudkan Ide Kamu */}
           <section id="galeri" className="max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full">
-            <div className="mb-10">
-              <h2 className="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Galeri Portofolio</h2>
+            <div className="mb-10 max-w-2xl space-y-3">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+                Wujudkan Ide Kamu
+              </h2>
+              <p className="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
+                Ubah momen spesial menjadi kado WPAP penuh warna atau buat acara dan bisnismu tampil mencolok dengan poster profesional. Temukan inspirasi gaya desain favoritmu di bawah ini dan pesan langsung sesuai kebutuhan!
+              </p>
             </div>
 
             {/* Grid Karya */}
@@ -458,8 +462,23 @@
 
           {/* Footer */}
           <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800/80 py-8 text-center text-xs text-zinc-500">
-            <p>© {new Date().getFullYear()} Setingkat Creative Studio. Hak Cipta Dilindungi.</p>
+            <p>© {new Date().getFullYear()} Setingkat. Hak Cipta Dilindungi.</p>
           </footer>
+
+          {/* Tombol Go To Top dengan Gradien Warna WPAP */}
+          {showGoToTop && (
+            <button
+              type="button"
+              onClick={scrollToTop}
+              aria-label="Kembali ke Atas"
+              title="Kembali ke Atas"
+              className="fixed bottom-6 right-6 z-40 p-3.5 rounded-full bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 dark:from-amber-400 dark:via-pink-500 dark:to-cyan-400 text-white shadow-lg hover:shadow-xl hover:brightness-110 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+              </svg>
+            </button>
+          )}
 
           {/* Modal Form Pemesanan WhatsApp */}
           {isOrderModalOpen && (
