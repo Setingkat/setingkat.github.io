@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Setingkat — Studio Desain Grafis, WPAP & Poster Kreatif</title>
-  <link rel="icon" type="image/png" href="./images/logo.png" />
+  <link rel="icon" type="image/png" href="./images/icon/logo.png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -13,20 +18,21 @@
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #09090b;
-      color: #f4f4f5;
     }
     .wpap-grid-bg {
-      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
       background-size: 24px 24px;
+    }
+    .dark .wpap-grid-bg {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
     }
   </style>
 </head>
-<body class="antialiased selection:bg-amber-400 selection:text-zinc-950">
+<body class="antialiased bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 selection:bg-amber-400 selection:text-zinc-950 transition-colors duration-300">
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     // Ilustrasi Vektor WPAP SVG Autentik (Fallback jika imageUrl kosong)
     const WpapPortraitSVG = ({ variant = 1 }) => {
@@ -118,7 +124,7 @@
       );
     };
 
-    // Daftar Karya Portofolio (Tambahkan karya ke-5, ke-6, dst. di bawah ini; 4 pertama tampil awal, sisanya muncul saat klik "Lihat Lainnya")
+    // Daftar Karya Portofolio
     const INITIAL_PORTFOLIO = [
       {
         id: 1,
@@ -211,15 +217,25 @@
     ];
 
     function App() {
-      const INITIAL_VISIBLE_COUNT = 4; // Jumlah karya yang tampil sebelum tombol "Lihat Lainnya" diklik
+      const INITIAL_VISIBLE_COUNT = 4;
       const [activeCategory, setActiveCategory] = useState("Semua");
       const [showAll, setShowAll] = useState(false);
       const [selectedWork, setSelectedWork] = useState(null);
+      const [isDark, setIsDark] = useState(true);
 
       // State Form Order WhatsApp
       const [orderName, setOrderName] = useState("");
       const [orderService, setOrderService] = useState("WPAP Portrait (Single / Couple)");
       const [orderNotes, setOrderNotes] = useState("");
+
+      useEffect(() => {
+        const rootEl = document.documentElement;
+        if (isDark) {
+          rootEl.classList.add("dark");
+        } else {
+          rootEl.classList.remove("dark");
+        }
+      }, [isDark]);
 
       const categories = ["Semua", "WPAP Art", "Desain Poster", "Branding & Event"];
 
@@ -262,23 +278,43 @@
       return (
         <div className="min-h-screen flex flex-col">
           {/* Navbar */}
-          <header className="sticky top-0 z-40 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/80">
+          <header className="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800/80 transition-colors duration-300">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
               <a href="#" className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 via-pink-500 to-cyan-400 flex items-center justify-center font-black text-zinc-950 text-lg">
-                  S
-                </div>
-                <span className="font-extrabold text-xl tracking-tight text-white">
-                  SETINGKAT<span className="text-amber-400">.</span>
+                <img 
+                  src="./images/icon/logo.png" 
+                  alt="Logo Setingkat" 
+                  className="w-8 h-8 rounded-lg object-contain" 
+                />
+                <span className="font-extrabold text-xl tracking-tight text-zinc-900 dark:text-white">
+                  SETINGKAT<span className="text-amber-500 dark:text-amber-400">.</span>
                 </span>
               </a>
 
-              <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-                <a href="#galeri" className="hover:text-white transition-colors">Galeri Karya</a>
-                <a href="#pesan" className="hover:text-white transition-colors">Pesan Desain</a>
+              <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                <a href="#galeri" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Galeri Karya</a>
+                <a href="#pesan" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Pesan Desain</a>
               </nav>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                {/* Tombol Toggle Dark / Light Mode */}
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  aria-label="Ubah Tema Tampilan"
+                  title={isDark ? "Beralih ke Mode Terang (Light)" : "Beralih ke Mode Gelap (Dark)"}
+                  className="p-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors"
+                >
+                  {isDark ? (
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                  )}
+                </button>
+
                 <a
                   href="#pesan"
                   className="text-xs sm:text-sm font-bold px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 transition-colors"
@@ -290,74 +326,59 @@
           </header>
 
           {/* Hero Section */}
-          <section className="relative overflow-hidden wpap-grid-bg border-b border-zinc-800/80">
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="absolute top-20 right-0 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+          <section className="relative overflow-hidden wpap-grid-bg border-b border-zinc-200 dark:border-zinc-800/80 transition-colors duration-300">
+            <div className="absolute -top-24 -left-24 w-96 h-96 bg-pink-500/15 dark:bg-pink-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute top-20 right-0 w-96 h-96 bg-cyan-500/15 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 grid md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-amber-400">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-amber-600 dark:text-amber-400 shadow-sm dark:shadow-none">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse"></span>
                   PORTFOLIO & CREATIVE DESIGN STUDIO
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1]">
                   Ubah Foto & Ide Menjadi{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 dark:from-amber-400 dark:via-pink-500 dark:to-cyan-400">
                     WPAP & Poster
                   </span>{" "}
                   Berdaya Visual Tinggi.
                 </h1>
 
-                <p className="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                  Showcase resmi hasil karya desain grafis <strong className="text-zinc-200">Setingkat</strong>. Spesialis ilustrasi vektor poligonal WPAP (Wedha&apos;s Pop Art Portrait), poster acara, promosi bisnis, hingga materi cetak resolusi tinggi.
+                <p className="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                  Showcase resmi hasil karya desain grafis <strong className="text-zinc-900 dark:text-zinc-200">Setingkat</strong>. Spesialis ilustrasi vektor poligonal WPAP (Wedha&apos;s Pop Art Portrait), poster acara, promosi bisnis, hingga materi cetak resolusi tinggi.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4 pt-2">
                   <a
                     href="#galeri"
-                    className="px-6 py-3.5 rounded-xl bg-white text-zinc-950 font-bold text-sm hover:bg-zinc-200 transition-colors"
+                    className="px-6 py-3.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
                   >
                     Lihat Koleksi Karya
                   </a>
                   <a
                     href="#pesan"
-                    className="px-6 py-3.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white font-semibold text-sm hover:border-zinc-500 transition-colors"
+                    className="px-6 py-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold text-sm hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
                   >
                     Konsultasi Konsep
                   </a>
-                </div>
-
-                <div className="grid grid-cols-3 gap-6 pt-6 border-t border-zinc-800/80 max-w-md">
-                  <div>
-                    <p className="text-2xl font-extrabold text-white">100%</p>
-                    <p className="text-xs text-zinc-400">Vektor Presisi</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-extrabold text-amber-400">300 DPI</p>
-                    <p className="text-xs text-zinc-400">Siap Cetak Besar</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-extrabold text-cyan-400">24–48j</p>
-                    <p className="text-xs text-zinc-400">Pengerjaan Cepat</p>
-                  </div>
                 </div>
               </div>
 
               {/* Preview Card Showcase di Hero */}
               <div className="md:col-span-5">
                 <div className="relative mx-auto max-w-sm">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-40"></div>
-                  <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-3 shadow-2xl">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-30 dark:opacity-40"></div>
+                  <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-3 shadow-xl dark:shadow-2xl">
                     <div className="aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950">
                       <WpapPortraitSVG variant={1} />
                     </div>
                     <div className="pt-3 px-1 flex items-center justify-between">
                       <div>
-                        <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">Featured WPAP</p>
-                        <p className="text-sm font-bold text-white">Cyberpunk Vector Facet</p>
+                        <p className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Featured WPAP</p>
+                        <p className="text-sm font-bold text-zinc-900 dark:text-white">Cyberpunk Vector Facet</p>
                       </div>
-                      <span className="text-xs px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 font-medium">
+                      <span className="text-xs px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium">
                         SVG / AI / PNG
                       </span>
                     </div>
@@ -371,8 +392,8 @@
           <section id="galeri" className="max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
               <div>
-                <h2 className="text-3xl font-extrabold text-white tracking-tight">Galeri Portofolio</h2>
-                <p className="text-zinc-400 mt-2 text-sm sm:text-base">
+                <h2 className="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Galeri Portofolio</h2>
+                <p className="text-zinc-600 dark:text-zinc-400 mt-2 text-sm sm:text-base">
                   Klik pada setiap karya untuk melihat detail teknis, ukuran, dan konsep desainnya.
                 </p>
               </div>
@@ -386,7 +407,7 @@
                     className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                       activeCategory === cat
                         ? "bg-amber-400 text-zinc-950 shadow-lg shadow-amber-400/20"
-                        : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"
+                        : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-zinc-200 dark:border-zinc-800"
                     }`}
                   >
                     {cat}
@@ -401,7 +422,7 @@
                 <div
                   key={item.id}
                   onClick={() => setSelectedWork(item)}
-                  className="group cursor-pointer bg-zinc-900/70 border border-zinc-800 hover:border-amber-400/60 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col"
+                  className="group cursor-pointer bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-amber-500 dark:hover:border-amber-400/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-md dark:shadow-none transition-all duration-300 flex flex-col"
                 >
                   <div className="aspect-[4/5] overflow-hidden bg-zinc-950 relative">
                     {renderArtwork(item)}
@@ -413,14 +434,14 @@
                   </div>
                   <div className="p-4 flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-white text-base group-hover:text-amber-400 transition-colors line-clamp-1">
+                      <h3 className="font-bold text-zinc-900 dark:text-white text-base group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-1">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-zinc-400 mt-1">{item.client}</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{item.client}</p>
                     </div>
-                    <div className="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400">
+                    <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                       <span>{item.year}</span>
-                      <span className="text-amber-400 font-semibold group-hover:translate-x-0.5 transition-transform">
+                      <span className="text-amber-600 dark:text-amber-400 font-semibold group-hover:translate-x-0.5 transition-transform">
                         Detail →
                       </span>
                     </div>
@@ -434,7 +455,7 @@
               <div className="mt-12 text-center">
                 <button
                   onClick={() => setShowAll(!showAll)}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-amber-400/60 text-white font-bold text-sm transition-all"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 hover:border-amber-500 dark:hover:border-amber-400/60 text-zinc-900 dark:text-white font-bold text-sm shadow-sm dark:shadow-none transition-all"
                 >
                   {showAll ? (
                     <>
@@ -452,10 +473,10 @@
 
           {/* Form Pemesanan WhatsApp */}
           <section id="pesan" className="max-w-4xl mx-auto px-4 sm:px-6 pb-20 w-full">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-10">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-10 shadow-sm dark:shadow-none transition-colors duration-300">
               <div className="mb-8">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Mulai Pesan Desain</h2>
-                <p className="text-zinc-400 text-sm mt-1">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">Mulai Pesan Desain</h2>
+                <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">
                   Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp Setingkat.
                 </p>
               </div>
@@ -463,22 +484,22 @@
               <form onSubmit={handleWhatsAppOrder} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-300 mb-2">Nama Kamu</label>
+                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Nama Kamu</label>
                     <input
                       type="text"
                       required
                       value={orderName}
                       onChange={(e) => setOrderName(e.target.value)}
                       placeholder="Contoh: Budi Santoso"
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-300 mb-2">Pilih Layanan</label>
+                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Pilih Layanan</label>
                     <select
                       value={orderService}
                       onChange={(e) => setOrderService(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
                     >
                       <option>WPAP Portrait (Single / Couple)</option>
                       <option>Desain Poster Event / Promosi</option>
@@ -489,13 +510,13 @@
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
                   <textarea
                     rows="3"
                     value={orderNotes}
                     onChange={(e) => setOrderNotes(e.target.value)}
                     placeholder="Ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
                   ></textarea>
                 </div>
 
@@ -510,7 +531,7 @@
           </section>
 
           {/* Footer */}
-          <footer className="mt-auto border-t border-zinc-800/80 py-8 text-center text-xs text-zinc-500">
+          <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800/80 py-8 text-center text-xs text-zinc-500">
             <p>© {new Date().getFullYear()} Setingkat Creative Studio. Hak Cipta Dilindungi.</p>
           </footer>
 
@@ -518,11 +539,11 @@
           {selectedWork && (
             <div
               onClick={() => setSelectedWork(null)}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+              className="fixed inset-0 z-50 bg-black/75 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-3xl w-full overflow-hidden grid md:grid-cols-2 shadow-2xl"
+                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl max-w-3xl w-full overflow-hidden grid md:grid-cols-2 shadow-2xl"
               >
                 <div className="aspect-[4/5] bg-zinc-950">
                   {renderArtwork(selectedWork)}
@@ -530,22 +551,22 @@
                 <div className="p-6 flex flex-col justify-between">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400/15 text-amber-400 border border-amber-400/30">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400/20 dark:bg-amber-400/15 text-amber-700 dark:text-amber-400 border border-amber-400/40 dark:border-amber-400/30">
                         {selectedWork.category}
                       </span>
                       <button
                         onClick={() => setSelectedWork(null)}
-                        className="text-zinc-400 hover:text-white text-sm font-bold px-2 py-1"
+                        className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-sm font-bold px-2 py-1"
                       >
                         ✕
                       </button>
                     </div>
-                    <h3 className="text-2xl font-extrabold text-white">{selectedWork.title}</h3>
-                    <p className="text-sm text-zinc-300 leading-relaxed">{selectedWork.description}</p>
-                    <div className="space-y-2 pt-3 border-t border-zinc-800 text-xs">
-                      <p className="text-zinc-400"><strong className="text-zinc-200">Klien:</strong> {selectedWork.client}</p>
-                      <p className="text-zinc-400"><strong className="text-zinc-200">Tools:</strong> {selectedWork.tools}</p>
-                      <p className="text-zinc-400"><strong className="text-zinc-200">Tahun:</strong> {selectedWork.year}</p>
+                    <h3 className="text-2xl font-extrabold text-zinc-900 dark:text-white">{selectedWork.title}</h3>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">{selectedWork.description}</p>
+                    <div className="space-y-2 pt-3 border-t border-zinc-200 dark:border-zinc-800 text-xs">
+                      <p className="text-zinc-500 dark:text-zinc-400"><strong className="text-zinc-800 dark:text-zinc-200">Klien:</strong> {selectedWork.client}</p>
+                      <p className="text-zinc-500 dark:text-zinc-400"><strong className="text-zinc-800 dark:text-zinc-200">Tools:</strong> {selectedWork.tools}</p>
+                      <p className="text-zinc-500 dark:text-zinc-400"><strong className="text-zinc-800 dark:text-zinc-200">Tahun:</strong> {selectedWork.year}</p>
                     </div>
                   </div>
 
