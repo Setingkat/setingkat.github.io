@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth dark">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -124,7 +124,7 @@
       );
     };
 
-    // Daftar Karya Portofolio
+    // Daftar Karya Portofolio (Default tampil 8 karya)
     const INITIAL_PORTFOLIO = [
       {
         id: 1,
@@ -217,10 +217,11 @@
     ];
 
     function App() {
-      const INITIAL_VISIBLE_COUNT = 4;
+      const INITIAL_VISIBLE_COUNT = 8;
       const [showAll, setShowAll] = useState(false);
       const [selectedWork, setSelectedWork] = useState(null);
-      const [isDark, setIsDark] = useState(true);
+      const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+      const [isDark, setIsDark] = useState(false);
 
       // State Form Order WhatsApp
       const [orderName, setOrderName] = useState("");
@@ -245,6 +246,14 @@
         const phone = "6283163511050";
         const text = `Halo Setingkat! Saya *${orderName || "Klien"}* ingin memesan jasa desain:%0A• *Layanan:* ${orderService}%0A• *Catatan/Konsep:* ${orderNotes || "-"}%0A%0AMohon info estimasi waktu dan harganya ya.`;
         window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+        setIsOrderModalOpen(false);
+      };
+
+      const openOrderModalWithService = (serviceName) => {
+        if (serviceName) {
+          setOrderService(serviceName);
+        }
+        setIsOrderModalOpen(true);
       };
 
       const renderArtwork = (item) => {
@@ -279,36 +288,45 @@
                 </span>
               </a>
 
-              <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                <a href="#galeri" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Galeri Karya</a>
-                <a href="#pesan" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Pesan Desain</a>
-              </nav>
+              <div className="flex items-center gap-4 sm:gap-6">
+                <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                  <a href="#galeri" className="hover:text-zinc-950 dark:hover:text-white transition-colors">Galeri Karya</a>
+                  <button
+                    type="button"
+                    onClick={() => openOrderModalWithService()}
+                    className="hover:text-zinc-950 dark:hover:text-white transition-colors"
+                  >
+                    Pesan Desain
+                  </button>
+                </nav>
 
-              <div className="flex items-center gap-2.5 sm:gap-3">
-                <a
-                  href="#pesan"
-                  className="text-xs sm:text-sm font-bold px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 transition-colors"
-                >
-                  Order Sekarang
-                </a>
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <button
+                    type="button"
+                    onClick={() => openOrderModalWithService()}
+                    className="text-xs sm:text-sm font-bold px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 transition-colors"
+                  >
+                    Order Sekarang
+                  </button>
 
-                {/* Tombol Toggle Dark / Light Mode */}
-                <button
-                  onClick={() => setIsDark(!isDark)}
-                  aria-label="Ubah Tema Tampilan"
-                  title={isDark ? "Beralih ke Mode Terang (Light)" : "Beralih ke Mode Gelap (Dark)"}
-                  className="p-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors"
-                >
-                  {isDark ? (
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                  )}
-                </button>
+                  {/* Tombol Toggle Dark / Light Mode */}
+                  <button
+                    onClick={() => setIsDark(!isDark)}
+                    aria-label="Ubah Tema Tampilan"
+                    title={isDark ? "Beralih ke Mode Terang (Light)" : "Beralih ke Mode Gelap (Dark)"}
+                    className="p-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors"
+                  >
+                    {isDark ? (
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </header>
@@ -344,12 +362,13 @@
                   >
                     Lihat Koleksi Karya
                   </a>
-                  <a
-                    href="#pesan"
+                  <button
+                    type="button"
+                    onClick={() => openOrderModalWithService()}
                     className="px-6 py-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-semibold text-sm hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
                   >
                     Konsultasi Konsep
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -416,7 +435,7 @@
               ))}
             </div>
 
-            {/* Tombol Lihat Lainnya / Tampilkan Lebih Sedikit */}
+            {/* Tombol Lihat Lainnya / Tampilkan Lebih Sedikit (Muncul otomatis jika karya > 8) */}
             {INITIAL_PORTFOLIO.length > INITIAL_VISIBLE_COUNT && (
               <div className="mt-12 text-center">
                 <button
@@ -437,69 +456,87 @@
             )}
           </section>
 
-          {/* Form Pemesanan WhatsApp */}
-          <section id="pesan" className="max-w-4xl mx-auto px-4 sm:px-6 pb-20 w-full">
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-10 shadow-sm dark:shadow-none transition-colors duration-300">
-              <div className="mb-8">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">Mulai Pesan Desain</h2>
-                <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">
-                  Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp Setingkat.
-                </p>
-              </div>
-
-              <form onSubmit={handleWhatsAppOrder} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Nama Kamu</label>
-                    <input
-                      type="text"
-                      required
-                      value={orderName}
-                      onChange={(e) => setOrderName(e.target.value)}
-                      placeholder="Contoh: Budi Santoso"
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Pilih Layanan</label>
-                    <select
-                      value={orderService}
-                      onChange={(e) => setOrderService(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
-                    >
-                      <option>WPAP Portrait (Single / Couple)</option>
-                      <option>Desain Poster Event / Promosi</option>
-                      <option>Re-Vector / Tracing Logo</option>
-                      <option>Custom Desain Grafis Lainnya</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
-                  <textarea
-                    rows="3"
-                    value={orderNotes}
-                    onChange={(e) => setOrderNotes(e.target.value)}
-                    placeholder="Ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition-colors"
-                >
-                  Kirim Pesanan via WhatsApp →
-                </button>
-              </form>
-            </div>
-          </section>
-
           {/* Footer */}
           <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800/80 py-8 text-center text-xs text-zinc-500">
             <p>© {new Date().getFullYear()} Setingkat Creative Studio. Hak Cipta Dilindungi.</p>
           </footer>
+
+          {/* Modal Form Pemesanan WhatsApp */}
+          {isOrderModalOpen && (
+            <div
+              onClick={() => setIsOrderModalOpen(false)}
+              className="fixed inset-0 z-50 bg-black/70 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl max-w-2xl w-full p-6 sm:p-10 shadow-2xl relative transition-colors duration-300"
+              >
+                <div className="flex items-start justify-between gap-4 mb-8">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">Mulai Pesan Desain</h2>
+                    <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">
+                      Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp Setingkat.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsOrderModalOpen(false)}
+                    aria-label="Tutup Form Pemesanan"
+                    className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800 text-base font-bold transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <form onSubmit={handleWhatsAppOrder} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Nama Kamu</label>
+                      <input
+                        type="text"
+                        required
+                        value={orderName}
+                        onChange={(e) => setOrderName(e.target.value)}
+                        placeholder="Contoh: Budi Santoso"
+                        className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Pilih Layanan</label>
+                      <select
+                        value={orderService}
+                        onChange={(e) => setOrderService(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
+                      >
+                        <option>WPAP Portrait (Single / Couple)</option>
+                        <option>Desain Poster Event / Promosi</option>
+                        <option>Re-Vector / Tracing Logo</option>
+                        <option>Custom Desain Grafis Lainnya</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
+                    <textarea
+                      rows="3"
+                      value={orderNotes}
+                      onChange={(e) => setOrderNotes(e.target.value)}
+                      placeholder="Ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition-colors"
+                  >
+                    Kirim Pesanan via WhatsApp →
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* Modal Lightbox Detail Karya */}
           {selectedWork && (
@@ -536,16 +573,17 @@
                     </div>
                   </div>
 
-                  <a
-                    href="#pesan"
+                  <button
+                    type="button"
                     onClick={() => {
-                      setOrderService(selectedWork.category);
+                      const cat = selectedWork.category;
                       setSelectedWork(null);
+                      openOrderModalWithService(cat);
                     }}
                     className="mt-6 block text-center w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-sm transition-colors"
                   >
                     Pesan Gaya Desain Seperti Ini
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
