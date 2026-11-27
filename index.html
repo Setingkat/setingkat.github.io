@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setingkat — Studio Desain Grafis, WPAP & Poster Kreatif</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #09090b;
+      color: #f4f4f5;
+    }
+    .wpap-grid-bg {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-amber-400 selection:text-zinc-950">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Ilustrasi Vektor WPAP SVG Autentik
+    const WpapPortraitSVG = ({ variant = 1 }) => {
+      if (variant === 1) {
+        return (
+          <svg viewBox="0 0 400 480" className="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="480" fill="#18181b" />
+            <polygon points="0,0 220,0 130,170 0,120" fill="#f59e0b" />
+            <polygon points="220,0 400,0 400,190 270,140" fill="#06b6d4" />
+            <polygon points="0,120 130,170 90,340 0,300" fill="#ec4899" />
+            <polygon points="400,190 400,480 280,480 310,290" fill="#8b5cf6" />
+            <polygon points="0,300 90,340 120,480 0,480" fill="#10b981" />
+            {/* Siluet Wajah & Kacamata WPAP */}
+            <polygon points="130,90 200,65 275,95 290,180 200,165 115,180" fill="#f43f5e" />
+            <polygon points="130,90 200,65 200,165 115,180" fill="#fb923c" />
+            <polygon points="115,180 200,165 200,260 125,250" fill="#fde047" />
+            <polygon points="200,165 290,180 275,250 200,260" fill="#38bdf8" />
+            {/* Frame Kacamata Pop Art */}
+            <polygon points="122,195 192,190 188,235 128,232" fill="#09090b" />
+            <polygon points="208,190 278,195 272,232 212,235" fill="#09090b" />
+            <polygon points="132,202 182,199 179,225 136,223" fill="#22d3ee" />
+            <polygon points="218,199 268,202 264,223 221,225" fill="#f472b6" />
+            {/* Hidung, Pipi & Rahang */}
+            <polygon points="188,225 212,225 222,285 180,285" fill="#fb7185" />
+            <polygon points="125,250 180,285 155,355 115,310" fill="#a855f7" />
+            <polygon points="275,250 285,310 245,355 222,285" fill="#34d399" />
+            <polygon points="180,285 222,285 245,355 200,395 155,355" fill="#facc15" />
+            <polygon points="168,318 232,318 220,338 180,338" fill="#e11d48" />
+            {/* Kerah & Bahu */}
+            <polygon points="155,355 200,395 245,355 310,480 90,480" fill="#2563eb" />
+            <polygon points="200,395 245,355 310,480 200,480" fill="#f97316" />
+          </svg>
+        );
+      }
+      return (
+        <svg viewBox="0 0 400 480" className="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="480" fill="#0f172a" />
+          <polygon points="0,0 180,0 95,210 0,160" fill="#14b8a6" />
+          <polygon points="180,0 400,0 400,150 250,190" fill="#eab308" />
+          <polygon points="0,160 95,210 110,480 0,480" fill="#6366f1" />
+          <polygon points="400,150 400,480 290,480 305,240" fill="#ec4899" />
+          {/* Potret Geometris WPAP 2 */}
+          <polygon points="120,85 215,55 285,105 265,195 135,195" fill="#f97316" />
+          <polygon points="135,195 265,195 250,310 200,375 145,310" fill="#22d3ee" />
+          <polygon points="135,195 200,195 200,375 145,310" fill="#fde047" />
+          <polygon points="145,205 190,200 185,225 148,225" fill="#1e1b4b" />
+          <polygon points="210,200 255,205 252,225 215,225" fill="#1e1b4b" />
+          <polygon points="190,210 212,210 218,275 184,275" fill="#f43f5e" />
+          <polygon points="170,305 230,305 218,325 182,325" fill="#9333ea" />
+          <polygon points="145,310 200,375 250,310 315,480 85,480" fill="#10b981" />
+          <polygon points="200,375 250,310 315,480 200,480" fill="#ef4444" />
+        </svg>
+      );
+    };
+
+    // Ilustrasi Desain Poster SVG
+    const PosterArtSVG = ({ variant = 1 }) => {
+      if (variant === 1) {
+        return (
+          <svg viewBox="0 0 400 480" className="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="posterGrad1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#1e1b4b" />
+                <stop offset="50%" stopColor="#be185d" />
+                <stop offset="100%" stopColor="#f59e0b" />
+              </linearGradient>
+            </defs>
+            <rect width="400" height="480" fill="url(#posterGrad1)" />
+            <circle cx="200" cy="210" r="115" fill="#fde047" opacity="0.9" />
+            <circle cx="200" cy="210" r="82" fill="#09090b" />
+            <rect x="40" y="45" width="120" height="24" rx="4" fill="#ffffff" opacity="0.9" />
+            <text x="52" y="61" fill="#09090b" fontSize="11" fontWeight="800" letterSpacing="2">FESTIVAL 2026</text>
+            <text x="40" y="375" fill="#ffffff" fontSize="38" fontWeight="900" letterSpacing="-1">SOUNDWAVE</text>
+            <text x="40" y="412" fill="#fde047" fontSize="24" fontWeight="800" letterSpacing="3">LIVE CONCERT</text>
+            <line x1="40" y1="432" x2="360" y2="432" stroke="#ffffff" strokeWidth="2" opacity="0.5" />
+            <text x="40" y="452" fill="#f4f4f5" fontSize="11" fontWeight="600" letterSpacing="1.5">SAMBAS CREATIVE ARENA • 20.00 WIB</text>
+          </svg>
+        );
+      }
+      return (
+        <svg viewBox="0 0 400 480" className="w-full h-full object-cover" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="480" fill="#111827" />
+          <rect x="28" y="28" width="344" height="424" fill="none" stroke="#10b981" strokeWidth="3" />
+          <polygon points="28,28 240,28 140,240 28,240" fill="#10b981" opacity="0.2" />
+          <circle cx="265" cy="175" r="75" fill="#f97316" />
+          <rect x="52" y="265" width="296" height="6" fill="#10b981" />
+          <text x="52" y="110" fill="#10b981" fontSize="14" fontWeight="800" letterSpacing="3">EDITION 04</text>
+          <text x="52" y="315" fill="#ffffff" fontSize="34" fontWeight="900">MINIMALIST</text>
+          <text x="52" y="352" fill="#10b981" fontSize="34" fontWeight="900">TECH EXPO</text>
+          <text x="52" y="395" fill="#9ca3af" fontSize="12" fontWeight="500">KEYNOTE • WORKSHOP • HARDWARE SHOWCASE</text>
+          <rect x="52" y="415" width="130" height="22" fill="#10b981" />
+          <text x="64" y="430" fill="#09090b" fontSize="10" fontWeight="800">SETINGKAT STUDIO</text>
+        </svg>
+      );
+    };
+
+    const INITIAL_PORTFOLIO = [
+      {
+        id: 1,
+        title: "WPAP Portrait — Cyberpunk Vision",
+        category: "WPAP Art",
+        client: "Koleksi Pribadi / Kado Wisuda",
+        year: "2026",
+        tools: "Adobe Illustrator / Vector Studio",
+        description: "Ilustrasi Wedha's Pop Art Portrait (WPAP) dengan komposisi bidang poligonal tajam tanpa kurva dan palet warna neon kontras tinggi. Cocok untuk cetak kanvas, kado eksklusif, maupun avatar branding.",
+        renderType: "wpap-1",
+        imageUrl: "./images/wpap/gerrard_way.jpg"
+      },
+      {
+        id: 2,
+        title: "Poster Event — Soundwave Live Concert",
+        category: "Desain Poster",
+        client: "Event Organizer Lokal",
+        year: "2026",
+        tools: "Photoshop & Illustrator",
+        description: "Desain poster promosi acara musik dengan hierarki tipografi tegas, permainan gradien warna hangat-dingin, dan tata letak siap cetak ukuran A2 maupun format Instagram Story.",
+        renderType: "poster-1",
+        imageUrl: ""
+      },
+      {
+        id: 3,
+        title: "WPAP Pop Art — Classic Geometric",
+        category: "WPAP Art",
+        client: "Komisi Klien",
+        year: "2026",
+        tools: "Vector Polygon Workflow",
+        description: "Eksplorasi WPAP dengan pembagian faset cahaya dan bayangan yang presisi pada struktur wajah, mempertahankan kemiripan subjek secara akurat dalam balutan warna pop art.",
+        renderType: "wpap-2",
+        imageUrl: "./images/wpap/billy_joe.jpg"
+      },
+      {
+        id: 4,
+        title: "Poster Kampanye — Minimalist Tech Expo",
+        category: "Branding & Event",
+        client: "Setingkat IT & Creative",
+        year: "2026",
+        tools: "Illustrator & Grid System",
+        description: "Poster bergaya Swiss-minimalist dengan aksen warna emerald dan oranye untuk acara pameran teknologi dan workshop perakitan PC.",
+        renderType: "poster-2",
+        imageUrl: ""
+      }
+    ];
+
+    function App() {
+      const [items, setItems] = useState(INITIAL_PORTFOLIO);
+      const [activeCategory, setActiveCategory] = useState("Semua");
+      const [selectedWork, setSelectedWork] = useState(null);
+      const [showAddModal, setShowAddModal] = useState(false);
+
+      // State Form Tambah Karya (Preview)
+      const [newTitle, setNewTitle] = useState("");
+      const [newCategory, setNewCategory] = useState("WPAP Art");
+      const [newClient, setNewClient] = useState("");
+      const [newDesc, setNewDesc] = useState("");
+      const [newImageUrl, setNewImageUrl] = useState("");
+
+      // State Form Order WhatsApp
+      const [orderName, setOrderName] = useState("");
+      const [orderService, setOrderService] = useState("WPAP Portrait (Single / Couple)");
+      const [orderNotes, setOrderNotes] = useState("");
+
+      const categories = ["Semua", "WPAP Art", "Desain Poster", "Branding & Event"];
+
+      const filteredItems = activeCategory === "Semua"
+        ? items
+        : items.filter((item) => item.category === activeCategory);
+
+      const handleAddItem = (e) => {
+        e.preventDefault();
+        if (!newTitle.trim()) return;
+        const created = {
+          id: Date.now(),
+          title: newTitle,
+          category: newCategory,
+          client: newClient || "Proyek Setingkat",
+          year: "2026",
+          tools: "Setingkat Creative Workflow",
+          description: newDesc || "Karya desain eksklusif dikerjakan dengan detail tinggi dan resolusi siap cetak.",
+          renderType: newCategory === "WPAP Art" ? "wpap-1" : "poster-1",
+          imageUrl: newImageUrl.trim()
+        };
+        setItems([created, ...items]);
+        setNewTitle("");
+        setNewClient("");
+        setNewDesc("");
+        setNewImageUrl("");
+        setShowAddModal(false);
+      };
+
+      const handleWhatsAppOrder = (e) => {
+        e.preventDefault();
+        const phone = "6283163511050"; // Ganti dengan nomor WhatsApp Setingkat asli
+        const text = `Halo Setingkat! Saya *${orderName || "Klien"}* ingin memesan jasa desain:%0A• *Layanan:* ${orderService}%0A• *Catatan/Konsep:* ${orderNotes || "-"}%0A%0AMohon info estimasi waktu dan harganya ya.`;
+        window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+      };
+
+      const renderArtwork = (item) => {
+        if (item.imageUrl) {
+          return (
+            <img
+              src={item.imageUrl}
+              alt={item.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          );
+        }
+        if (item.renderType === "wpap-1") return <WpapPortraitSVG variant={1} />;
+        if (item.renderType === "wpap-2") return <WpapPortraitSVG variant={2} />;
+        if (item.renderType === "poster-1") return <PosterArtSVG variant={1} />;
+        return <PosterArtSVG variant={2} />;
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Navbar */}
+          <header className="sticky top-0 z-40 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/80">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+              <a href="#" className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 via-pink-500 to-cyan-400 flex items-center justify-center font-black text-zinc-950 text-lg">
+                  S
+                </div>
+                <span className="font-extrabold text-xl tracking-tight text-white">
+                  SETINGKAT<span className="text-amber-400">.</span>
+                </span>
+              </a>
+
+              <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+                <a href="#galeri" className="hover:text-white transition-colors">Galeri Karya</a>
+                <a href="#layanan" className="hover:text-white transition-colors">Layanan & Paket</a>
+                <a href="#pesan" className="hover:text-white transition-colors">Pesan Desain</a>
+              </nav>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 transition-colors"
+                >
+                  + Simulasi Karya
+                </button>
+                <a
+                  href="#pesan"
+                  className="text-xs sm:text-sm font-bold px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 transition-colors"
+                >
+                  Order Sekarang
+                </a>
+              </div>
+            </div>
+          </header>
+
+          {/* Hero Section */}
+          <section className="relative overflow-hidden wpap-grid-bg border-b border-zinc-800/80">
+            <div className="absolute -top-24 -left-24 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute top-20 right-0 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 grid md:grid-cols-12 gap-12 items-center">
+              <div className="md:col-span-7 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-amber-400">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                  PORTFOLIO & CREATIVE DESIGN STUDIO
+                </div>
+
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+                  Ubah Foto & Ide Menjadi{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400">
+                    WPAP & Poster
+                  </span>{" "}
+                  Berdaya Visual Tinggi.
+                </h1>
+
+                <p className="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                  Showcase resmi hasil karya desain grafis <strong className="text-zinc-200">Setingkat</strong>. Spesialis ilustrasi vektor poligonal WPAP (Wedha&apos;s Pop Art Portrait), poster acara, promosi bisnis, hingga materi cetak resolusi tinggi.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <a
+                    href="#galeri"
+                    className="px-6 py-3.5 rounded-xl bg-white text-zinc-950 font-bold text-sm hover:bg-zinc-200 transition-colors"
+                  >
+                    Lihat Koleksi Karya
+                  </a>
+                  <a
+                    href="#pesan"
+                    className="px-6 py-3.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white font-semibold text-sm hover:border-zinc-500 transition-colors"
+                  >
+                    Konsultasi Konsep
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-3 gap-6 pt-6 border-t border-zinc-800/80 max-w-md">
+                  <div>
+                    <p className="text-2xl font-extrabold text-white">100%</p>
+                    <p className="text-xs text-zinc-400">Vektor Presisi</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-extrabold text-amber-400">300 DPI</p>
+                    <p className="text-xs text-zinc-400">Siap Cetak Besar</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-extrabold text-cyan-400">24–48j</p>
+                    <p className="text-xs text-zinc-400">Pengerjaan Cepat</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Preview Card Showcase di Hero */}
+              <div className="md:col-span-5">
+                <div className="relative mx-auto max-w-sm">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-40"></div>
+                  <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-3 shadow-2xl">
+                    <div className="aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950">
+                      <WpapPortraitSVG variant={1} />
+                    </div>
+                    <div className="pt-3 px-1 flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">Featured WPAP</p>
+                        <p className="text-sm font-bold text-white">Cyberpunk Vector Facet</p>
+                      </div>
+                      <span className="text-xs px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 font-medium">
+                        SVG / AI / PNG
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Galeri Portofolio */}
+          <section id="galeri" className="max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <div>
+                <h2 className="text-3xl font-extrabold text-white tracking-tight">Galeri Portofolio</h2>
+                <p className="text-zinc-400 mt-2 text-sm sm:text-base">
+                  Klik pada setiap karya untuk melihat detail teknis, ukuran, dan konsep desainnya.
+                </p>
+              </div>
+
+              {/* Filter Kategori */}
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                      activeCategory === cat
+                        ? "bg-amber-400 text-zinc-950 shadow-lg shadow-amber-400/20"
+                        : "bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Grid Karya */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredItems.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => setSelectedWork(item)}
+                  className="group cursor-pointer bg-zinc-900/70 border border-zinc-800 hover:border-amber-400/60 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col"
+                >
+                  <div className="aspect-[4/5] overflow-hidden bg-zinc-950 relative">
+                    {renderArtwork(item)}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-zinc-950/85 backdrop-blur-sm text-white border border-zinc-700/80">
+                        {item.category}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-bold text-white text-base group-hover:text-amber-400 transition-colors line-clamp-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-zinc-400 mt-1">{item.client}</p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400">
+                      <span>{item.year}</span>
+                      <span className="text-amber-400 font-semibold group-hover:translate-x-0.5 transition-transform">
+                        Detail →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Layanan & Paket */}
+          <section id="layanan" className="bg-zinc-900/40 border-y border-zinc-800/80 py-20">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+              <div className="text-center max-w-2xl mx-auto mb-14">
+                <h2 className="text-3xl font-extrabold text-white">Layanan Desain Setingkat</h2>
+                <p className="text-zinc-400 mt-2 text-sm sm:text-base">
+                  File akhir dikirim lengkap dalam format resolusi tinggi siap cetak maupun publikasi digital.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 space-y-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 font-bold">
+                    01
+                  </div>
+                  <h3 className="text-xl font-bold text-white">WPAP Portrait Art</h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">
+                    Pembuatan ilustrasi wajah bergaya pop art geometris dari foto pilihanmu. Cocok untuk hadiah ulang tahun, wisuda, pernikahan, atau dekorasi dinding.
+                  </p>
+                  <ul className="text-xs text-zinc-300 space-y-2 pt-2 border-t border-zinc-800">
+                    <li>✓ File Master Vektor (AI / SVG / PDF)</li>
+                    <li>✓ PNG Transparan & Wallpaper HD</li>
+                    <li>✓ Bebas Request Palet Warna</li>
+                  </ul>
+                </div>
+
+                <div className="bg-zinc-950 border border-pink-500/40 rounded-2xl p-6 space-y-4 relative">
+                  <span className="absolute top-4 right-4 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-400 border border-pink-500/30">
+                    Populer
+                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 font-bold">
+                    02
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Poster Event & Promosi</h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">
+                    Desain poster visual untuk konser, seminar, turnamen, peluncuran produk, maupun promo UMKM dengan komposisi tipografi modern.
+                  </p>
+                  <ul className="text-xs text-zinc-300 space-y-2 pt-2 border-t border-zinc-800">
+                    <li>✓ Ukuran Cetak (A3/A2/Banner) + Rasio Sosmed</li>
+                    <li>✓ Revisi Tata Letak & Teks</li>
+                    <li>✓ Siap Cetak CMYK & Digital RGB</li>
+                  </ul>
+                </div>
+
+                <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 space-y-4">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 font-bold">
+                    03
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Re-Vector & Custom Grafis</h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">
+                    Tracing ulang logo pecah menjadi vektor tajam, pembuatan feed media sosial, serta kebutuhan grafis branding usaha.
+                  </p>
+                  <ul className="text-xs text-zinc-300 space-y-2 pt-2 border-t border-zinc-800">
+                    <li>✓ Hasil Tajam Tanpa Pecah Saat Diperbesar</li>
+                    <li>✓ Pengerjaan Cepat & Komunikatif</li>
+                    <li>✓ Paket Bundling Konten</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Form Pemesanan WhatsApp */}
+          <section id="pesan" className="max-w-4xl mx-auto px-4 sm:px-6 py-20 w-full">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-10">
+              <div className="mb-8">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Mulai Pesan Desain</h2>
+                <p className="text-zinc-400 text-sm mt-1">
+                  Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp Setingkat.
+                </p>
+              </div>
+
+              <form onSubmit={handleWhatsAppOrder} className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-2">Nama Kamu</label>
+                    <input
+                      type="text"
+                      required
+                      value={orderName}
+                      onChange={(e) => setOrderName(e.target.value)}
+                      placeholder="Contoh: Budi Santoso"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-2">Pilih Layanan</label>
+                    <select
+                      value={orderService}
+                      onChange={(e) => setOrderService(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option>WPAP Portrait (Single / Couple)</option>
+                      <option>Desain Poster Event / Promosi</option>
+                      <option>Re-Vector / Tracing Logo</option>
+                      <option>Custom Desain Grafis Lainnya</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
+                  <textarea
+                    rows="3"
+                    value={orderNotes}
+                    onChange={(e) => setOrderNotes(e.target.value)}
+                    placeholder="Ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-sm text-white focus:outline-none focus:border-amber-400"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm transition-colors"
+                >
+                  Kirim Pesanan via WhatsApp →
+                </button>
+              </form>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="mt-auto border-t border-zinc-800/80 py-8 text-center text-xs text-zinc-500">
+            <p>© {new Date().getFullYear()} Setingkat Creative Studio. Hak Cipta Dilindungi.</p>
+          </footer>
+
+          {/* Modal Lightbox Detail Karya */}
+          {selectedWork && (
+            <div
+              onClick={() => setSelectedWork(null)}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-3xl w-full overflow-hidden grid md:grid-cols-2 shadow-2xl"
+              >
+                <div className="aspect-[4/5] bg-zinc-950">
+                  {renderArtwork(selectedWork)}
+                </div>
+                <div className="p-6 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400/15 text-amber-400 border border-amber-400/30">
+                        {selectedWork.category}
+                      </span>
+                      <button
+                        onClick={() => setSelectedWork(null)}
+                        className="text-zinc-400 hover:text-white text-sm font-bold px-2 py-1"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <h3 className="text-2xl font-extrabold text-white">{selectedWork.title}</h3>
+                    <p className="text-sm text-zinc-300 leading-relaxed">{selectedWork.description}</p>
+                    <div className="space-y-2 pt-3 border-t border-zinc-800 text-xs">
+                      <p className="text-zinc-400"><strong className="text-zinc-200">Klien:</strong> {selectedWork.client}</p>
+                      <p className="text-zinc-400"><strong className="text-zinc-200">Tools:</strong> {selectedWork.tools}</p>
+                      <p className="text-zinc-400"><strong className="text-zinc-200">Tahun:</strong> {selectedWork.year}</p>
+                    </div>
+                  </div>
+
+                  <a
+                    href="#pesan"
+                    onClick={() => {
+                      setOrderService(selectedWork.category);
+                      setSelectedWork(null);
+                    }}
+                    className="mt-6 block text-center w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-sm transition-colors"
+                  >
+                    Pesan Gaya Desain Seperti Ini
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Simulasi Tambah Karya */}
+          {showAddModal && (
+            <div
+              onClick={() => setShowAddModal(false)}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full p-6 space-y-4"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-white">Simulasi Tambah Karya ke Galeri</h3>
+                  <button onClick={() => setShowAddModal(false)} className="text-zinc-400 hover:text-white">✕</button>
+                </div>
+                <form onSubmit={handleAddItem} className="space-y-3">
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">Judul Karya</label>
+                    <input
+                      type="text"
+                      required
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      placeholder="Contoh: WPAP Wajah Tokoh"
+                      className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">Kategori</label>
+                    <select
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-white"
+                    >
+                      <option>WPAP Art</option>
+                      <option>Desain Poster</option>
+                      <option>Branding & Event</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">URL Gambar (Opsional)</label>
+                    <input
+                      type="url"
+                      value={newImageUrl}
+                      onChange={(e) => setNewImageUrl(e.target.value)}
+                      placeholder="https://... (kosongkan untuk memakai vektor bawaan)"
+                      className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">Deskripsi Singkat</label>
+                    <textarea
+                      rows="2"
+                      value={newDesc}
+                      onChange={(e) => setNewDesc(e.target.value)}
+                      placeholder="Keterangan singkat karya..."
+                      className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-sm text-white"
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-sm"
+                  >
+                    Tampilkan di Galeri
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
