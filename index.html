@@ -26,13 +26,55 @@
     .dark .wpap-grid-bg {
       background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
     }
+
+    /* Animasi Hero Fade-In & Slide-Up */
+    @keyframes heroFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-hero-1 {
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-hero-2 {
+      opacity: 0;
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
+    }
+    .animate-hero-3 {
+      opacity: 0;
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s forwards;
+    }
+    .animate-hero-4 {
+      opacity: 0;
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.36s forwards;
+    }
+    .animate-hero-card {
+      opacity: 0;
+      animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+
+    /* Kelas Transisi Scroll-Reveal */
+    .reveal-hidden {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body class="antialiased bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 selection:bg-amber-400 selection:text-zinc-950 transition-colors duration-300">
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef } = React;
 
     // Ilustrasi Vektor WPAP SVG Autentik (Fallback jika imageUrl kosong)
     const WpapPortraitSVG = ({ variant = 1 }) => {
@@ -224,6 +266,10 @@
       const [isDark, setIsDark] = useState(false);
       const [showGoToTop, setShowGoToTop] = useState(false);
 
+      // State Scroll-Reveal Section "Wujudkan Ide Kamu"
+      const [isGalleryVisible, setIsGalleryVisible] = useState(false);
+      const gallerySectionRef = useRef(null);
+
       // State Form Order WhatsApp
       const [orderName, setOrderName] = useState("");
       const [orderService, setOrderService] = useState("WPAP Portrait (Single / Couple)");
@@ -244,6 +290,30 @@
         };
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
+
+      // IntersectionObserver untuk memunculkan section Wujudkan Ide Kamu saat di-scroll
+      useEffect(() => {
+        const target = gallerySectionRef.current;
+        if (!target) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setIsGalleryVisible(true);
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.12,
+            rootMargin: "0px 0px -40px 0px"
+          }
+        );
+
+        observer.observe(target);
+        return () => observer.disconnect();
       }, []);
 
       const scrollToTop = () => {
@@ -344,12 +414,12 @@
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 grid md:grid-cols-12 gap-12 items-center">
               <div className="md:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-amber-600 dark:text-amber-400 shadow-sm dark:shadow-none">
+                <div className="animate-hero-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-semibold text-amber-600 dark:text-amber-400 shadow-sm dark:shadow-none">
                   <span className="w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse"></span>
-                  PORTFOLIO & CREATIVE DESIGN STUDIO
+                  DESAIN WPAP & POSTER
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1]">
+                <h1 className="animate-hero-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-[1.1]">
                   Bikin Foto & Idemu Jadi{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 dark:from-amber-400 dark:via-pink-500 dark:to-cyan-400">
                     Karya WPAP & Poster
@@ -357,11 +427,11 @@
                   Keren.
                 </h1>
 
-                <p className="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+                <p className="animate-hero-3 text-zinc-600 dark:text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
                   Punya foto favorit buat kado atau ide acara yang mau dipromosiin? Semuanya bisa kita sulap jadi ilustrasi WPAP warna-warni sampai poster kece yang siap cetak dan pamerin.
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 pt-2">
+                <div className="animate-hero-4 flex flex-wrap items-center gap-4 pt-2">
                   <a
                     href="#galeri"
                     className="px-6 py-3.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
@@ -372,7 +442,7 @@
               </div>
 
               {/* Preview Card Showcase di Hero */}
-              <div className="md:col-span-5">
+              <div className="md:col-span-5 animate-hero-card">
                 <div className="relative mx-auto max-w-sm">
                   <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-30 dark:opacity-40"></div>
                   <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-3 shadow-xl dark:shadow-2xl">
@@ -394,9 +464,17 @@
             </div>
           </section>
 
-          {/* Wujudkan Ide Kamu */}
-          <section id="galeri" className="max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full">
-            <div className="mb-10 w-full space-y-3">
+          {/* Wujudkan Ide Kamu (Muncul dengan animasi saat di-scroll) */}
+          <section
+            id="galeri"
+            ref={gallerySectionRef}
+            className="max-w-6xl mx-auto px-4 sm:px-6 py-20 w-full"
+          >
+            <div
+              className={`mb-10 w-full space-y-3 reveal-hidden ${
+                isGalleryVisible ? "reveal-visible" : ""
+              }`}
+            >
               <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
                 Wujudkan Ide Kamu
               </h2>
@@ -405,13 +483,16 @@
               </p>
             </div>
 
-            {/* Grid Karya */}
+            {/* Grid Karya dengan Staggered Reveal Animation */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {displayedItems.map((item) => (
+              {displayedItems.map((item, idx) => (
                 <div
                   key={item.id}
                   onClick={() => setSelectedWork(item)}
-                  className="group cursor-pointer bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-amber-500 dark:hover:border-amber-400/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-md dark:shadow-none transition-all duration-300 flex flex-col"
+                  style={{ transitionDelay: isGalleryVisible ? `${(idx % 4) * 100}ms` : "0ms" }}
+                  className={`group cursor-pointer bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-amber-500 dark:hover:border-amber-400/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-md dark:shadow-none transition-all duration-500 flex flex-col reveal-hidden ${
+                    isGalleryVisible ? "reveal-visible" : ""
+                  }`}
                 >
                   <div className="aspect-[4/5] overflow-hidden bg-zinc-950 relative">
                     {renderArtwork(item)}
@@ -441,7 +522,12 @@
 
             {/* Tombol Lihat Lainnya / Tampilkan Lebih Sedikit (Muncul otomatis jika karya > 8) */}
             {INITIAL_PORTFOLIO.length > INITIAL_VISIBLE_COUNT && (
-              <div className="mt-12 text-center">
+              <div
+                style={{ transitionDelay: isGalleryVisible ? "350ms" : "0ms" }}
+                className={`mt-12 text-center reveal-hidden ${
+                  isGalleryVisible ? "reveal-visible" : ""
+                }`}
+              >
                 <button
                   onClick={() => setShowAll(!showAll)}
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 hover:border-amber-500 dark:hover:border-amber-400/60 text-zinc-900 dark:text-white font-bold text-sm shadow-sm dark:shadow-none transition-all"
@@ -492,9 +578,9 @@
               >
                 <div className="flex items-start justify-between gap-4 mb-8">
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">Mulai Pesan Desain</h2>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">Yuk, Mulai Desainmu</h2>
                     <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">
-                      Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp Setingkat.
+                      Isi detail singkat di bawah untuk langsung terhubung ke WhatsApp.
                     </p>
                   </div>
                   <button
@@ -536,12 +622,12 @@
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Catatan Konsep / Ukuran</label>
+                    <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Ceritain Ide</label>
                     <textarea
                       rows="3"
                       value={orderNotes}
                       onChange={(e) => setOrderNotes(e.target.value)}
-                      placeholder="Ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
+                      placeholder="Buatkan saya desain WPAP pake foto pacar atau ceritakan singkat konsep warna, ukuran poster, atau deadline yang diinginkan..."
                       className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-amber-500 dark:focus:border-amber-400"
                     ></textarea>
                   </div>
